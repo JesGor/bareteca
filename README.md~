@@ -1,0 +1,9 @@
+#Bareteca
+Jesús Prieto López
+
+Repositorio con la aplicación de las prácticas de la asignatura DAI de la UGR en 2015-16.
+
+Este repositorio está creado en concreto para la práctica 7 que se trata de desplegar la aplicación en un PAAS.
+
+Se indicarán a continuación los pasos seguidos para su despliegue en Heroku por medio de integración continua con Snap-CI y Travis.
+
