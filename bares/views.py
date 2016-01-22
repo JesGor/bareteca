@@ -2,6 +2,20 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from .models import *
 from .forms import *
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+from rest_framework import status
+from .serializers import *
+
+class JSONResponse(HttpResponse):
+	"""
+	An HttpResponse that renders its content into JSON.
+	"""
+	def __init__(self, data, **kwargs):
+		content = JSONRenderer().render(data)
+		kwargs['content_type'] = 'application/json'
+		super(JSONResponse, self).__init__(content, **kwargs)
 
 def index(request):
 	lista_bares = Bar.objects.order_by("-num_visitas")
@@ -66,3 +80,38 @@ def subir_voto(request):
 def about(request):
 	return render(request, "bares/about.html")
 
+
+#VISTAS PARA LA INTERFAZ REST CON RESPUESTA JSON
+
+@csrf_exempt
+def lista_bares(request):
+	"""
+	Lista los bares, o crea uno
+	"""
+	if request.method == 'GET':
+		bares = Bar.objects.all()
+		serializer = BarSerializer(bares, many=True)
+		return JSONResponse(serializer.data)
+
+	elif request.method == 'POST':
+		data = JSONParser().parse(request)
+		serializer = BarSerializer(data=data)
+		if serializer.is_valid():
+			serializer.save()
+			return JSONResponse(serializer.data, status=201)
+		return JSONResponse(serializer.errors, status=400)
+		
+@csrf_exempt
+def lista_tapas(request, pk):
+	"""
+	Lista las tapas que tiene un bar
+	"""
+	try:
+		bar = Bar.objects.get(pk=pk)
+	except Bar.DoesNotExist:
+		return JSONResponse(status=status.HTTP_404_NOT_FOUND)
+
+	if request.method == 'GET':
+		tapas = bar.tapa_set.all()
+		serializer = TapaSerializer(tapas, many=True)
+		return JSONResponse(serializer.data)
