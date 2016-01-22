@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 import django
+import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -85,6 +86,11 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+DEPLOY_HEROKU = os.environ.get('PORT')
+if DEPLOY_HEROKU:
+    DATABASE_URL='postgres://zcwonvuwfvvxuz:M8yUboyHfxb5pG7ODgrdVh6PB0@ec2-107-20-222-114.compute-1.amazonaws.com:5432/d8o5mrbg8eealv'
+    DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 
 
 # Internationalization
