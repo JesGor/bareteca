@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'bares',
     'registration',
     'easy_maps',
+    'bootstrap_toolkit',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -115,7 +116,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     STATIC_PATH,
 )
-
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # Registration options
 # django-registration-redux
