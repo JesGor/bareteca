@@ -7,3 +7,4 @@ django-toolbelt==0.0.1
 django-bootstrap-toolkit==2.15.0
 gunicorn==19.3.0
 dj-database-url==0.3.0
+whitenoise==2.0.6
