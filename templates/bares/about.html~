@@ -1,0 +1,16 @@
+{% extends 'bares/base.html' %}
+
+{% load static %}
+
+{% block body_block %}
+
+    <div class="page-header">
+                <h1>About</h1>
+            </div>
+            <div>
+            <p>Esta página está creada para la asignatura de DAI de la ETSIIT</p>
+
+            <img  width="90" height="100" src="{% static "images/tapa.jpg" %}" alt="Foto de una tapa con cerveza" /> <!-- New line -->
+            </div>
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'bares/base.html' %}
+
+{% load static %}
+
+{% load easy_maps_tags %}
+
+{% block body_block %}
+    <div class="page-header">
+    	<div class="row">
+    	<div class="col-md-6">
+		<h1>{{bar.nombre}}</h1>
+		<h3>Dirección:</h3> {{bar.direccion}}
+		<h3>Visitas:</h3> {{bar.num_visitas}}
+		</div>
+		<div class="col-md-6">
+		{% easy_map bar.direccion 500 300 %}
+		</div>
+		</div>
+    </div>
+    
+    <div class="row placeholders">
+		<div class="col-xs-12 col-sm-6 placeholder">
+		    <div class="panel panel-primary">
+			<div class="panel-heading">
+		        <h3 class="panel-title">Tapas</h3>
+			</div>
+			</div>
+        {% if bar %}
+            {% if tapas %}
+            <ul class="list-group">
+                {% for tapa in tapas %}
+                <li class="list-group-item"><strong>{{ tapa.nombre }}</strong>
+                <p> <span class="badge" id="votos_{{tapa.id}}">{{tapa.votos}}</span> <button class="voto_megusta" id="{{tapa.id}}" class="btn btn-default btn-xs">Me Gusta</button></p></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <strong>No hay tapas registradas de este bar.</strong>
+            {% endif %}
+        {% else %}
+            El bar {{ nombres_bar }} no existe.
+        {% endif %}
+	</div>
+	</div>
+
+	<script>
+		$(function () {
+		   
+		$(".voto_megusta").click(function(){
+			var id = $(this).attr("id");
+			$.ajax({
+				type: "get",
+				url: "{% url 'subir_voto' %}",
+				data: {"tapa":id},
+				success: function(votos){
+					actualizar_votos(votos);
+					alert('Gracias por votar!');
+				},
+				failure: function(votos){
+					alert('No se ha podido votar');
+				}
+			});
+			
+			function actualizar_votos(votos) {
+				var tapa_a_cambiar="votos_"+id;
+				console.log(tapa_a_cambiar);
+				console.log(votos);
+				document.getElementById(tapa_a_cambiar).innerHTML= ""+votos;
+			};
+			
+		   });
+		   });
+		   
+		    
+
+		</script>
+
+{% endblock %}

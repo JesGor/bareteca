@@ -1,0 +1,92 @@
+{% extends 'bares/base.html' %}
+
+{% load static %}
+
+{% block body_block %}
+
+	<div class="jumbotron">
+		<h1>Bareteca</h1>
+		<p>Bienvenido a la página web donde podrás conocer bares de diferentes localizaciones y las tapas que puedes degustar en ellos. </p>
+	</div>
+	<div class="page-header">
+		<h1>Listado de bares</h1>
+    </div>
+	<div class="row placeholders">
+		<div class="col-xs-12 col-sm-6 placeholder">
+		    <div class="panel panel-primary">
+			<div class="panel-heading">
+		        <h3 class="panel-title">Bares</h3>
+			</div>
+			</div>
+			
+		    {% if bares %}
+		    <ul class="list-group">
+		        {% for bar in bares %}
+		         <li class="list-group-item"><a href="{% url 'bar' bar.slug %}"><strong>{{ bar.nombre }}</strong></a>
+		         <p> <span class="badge">{{bar.num_visitas}}</span></p></li>
+		        {% endfor %}
+		    </ul>
+		    {% else %}
+		    	<strong>No hay bares registrados.</strong>
+		    {% endif %}
+		</div>
+		
+		<div class="col-xs-12 col-sm-6 placeholder">
+			<div id="container" style="height: 300px"></div>
+			<!--Gráfica -->
+       <script src="http://code.highcharts.com/highcharts.js"></script>
+       <script>
+		   $(function (id) {
+		    $.ajax({
+				url: "{% url 'datos_grafica' %}",
+				type: 'get',              
+				success: function(datos) {
+					Mostrar_grafica (datos);  
+				},
+				failure: function(datos) { 
+					alert('No se han podido obtener datos.');
+				}
+			});
+			
+			
+			function Mostrar_grafica(datos) { 
+				var bares=[];
+				var num_visitas=[];
+			
+				bares = datos['nombre'];
+				num_visitas= datos['visitas'];
+				console.log(bares);
+		
+				$('#container').highcharts({
+					chart: {
+						type: 'bar'
+					},
+					title: {
+						text: 'Top Bares'
+					},
+					xAxis: {
+						categories: bares
+					},
+					yAxis: {
+						title: {
+						    text: 'Nº de visitas'
+						}
+					},
+					series: [{
+						name: 'Nº de visitas',
+						data: num_visitas
+					}]
+				});
+			};
+		});
+
+		</script>
+		</div>
+		
+    </div>
+       
+		
+       
+       <p><a href="{% url "about" %}">About</a></br></p>
+
+{% endblock %}
