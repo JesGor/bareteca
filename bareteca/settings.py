@@ -42,7 +42,6 @@ INSTALLED_APPS = (
     'bares',
     'registration',
     'easy_maps',
-    'bootstrap_toolkit',
 )
 
 MIDDLEWARE_CLASSES = (
