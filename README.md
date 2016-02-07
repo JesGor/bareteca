@@ -19,6 +19,21 @@ La aplicación web cuenta con un listado de bares junto a una gráfica con los b
 
 Esta web permite realizar el registro de usuario y la identificación de los mismos, que podrán añadir tapas a la base de datos.
 
+# Configurando aplicación para puesta en producción
+
+Al poner en producción nuestra aplicación debemos realizar algunos cambios: deshabilitar el ambiente de depuración y desplegar la aplicación en el servidor web de producción.
+
+Para deshabilitar la depuración para su desarrollo hay que modificar las líneas **DEBUG** y **ALLOWED_HOSTS** del archivo **settings.py**. Deberían quedar así:
+
+```python
+DEBUG = False
+
+ALLOWED_HOSTS = ['*']
+
+El despliegue de la aplicación en el servidor web de producción (heroku) se puede ver a continuación.
+
+```
+
 #Despliegue en PaaS - heroku
 
 Para el despligue de la aplicación he utilizado el Paas heroku que me permite trabajar con el repositorio github directamente conectándolo a él.
@@ -55,14 +70,18 @@ Aparte hay que añadir algunas dependencias al archivo requirements.txt, como pu
 Para que nos funcionen los estilos de **bootstrap** tenemos que realizar una serie de añadidos en el archivo [settings.py](https://github.com/JesGor/bareteca/blob/master/bareteca/settings.py) y [wsgi.py](https://github.com/JesGor/bareteca/blob/master/bareteca/wsgi.py).
 
 * En el archivo **settings.py** añadir la siguiente línea:
-	STATICFILES_STORAGE = whitenoise.django.GzipManifestStaticFilesStorage'
+
+```python
+STATICFILES_STORAGE = whitenoise.django.GzipManifestStaticFilesStorage'
+```
 
 * En el archivo **wsgi.py** modificar y añadir:
 
+```python
 	from whitenoise.django import DjangoWhiteNoise
 	application = get_wsgi_application()
 	application = DjangoWhiteNoise(application)
-
+```
 
 
 Es necesario bajarse las herramientas de heroku para desplegar la aplicación.
