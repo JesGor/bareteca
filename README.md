@@ -29,10 +29,9 @@ Para deshabilitar la depuración para su desarrollo hay que modificar las línea
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
+```
 
 El despliegue de la aplicación en el servidor web de producción (heroku) se puede ver a continuación.
-
-```
 
 #Despliegue en PaaS - heroku
 
